@@ -89,7 +89,7 @@ type Sensor struct {
 
 func (s Sensor) TimeSeriesGroup(prefix string) *prometheus.TimeSeriesGroup {
 	tsg := prometheus.NewTimeSeriesGroup()
-	tsg.Extend(s.Energy.TimeSeriesGroup("sensor"))
+	tsg.Extend(s.Energy.TimeSeriesGroup(prefix + "_sensor"))
 	return tsg
 }
 
