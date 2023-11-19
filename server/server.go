@@ -96,7 +96,9 @@ func getProbeFn(logger *logrus.Logger) func(w http.ResponseWriter, req *http.Req
 			fmt.Fprintf(w, `GET %s: failed to parse body: %v`, tasmotaUrl.String(), err)
 			return
 		}
-		logger.Infof("%#v\n", status)
+
+		// Output
+		fmt.Fprintf(w, "%s", status.TimeSeriesGroup().String())
 	}
 }
 
