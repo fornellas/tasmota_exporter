@@ -23,7 +23,7 @@ var Cmd = &cobra.Command{
 
 		logger := log.GetLogger(ctx)
 
-		srv := server.NewServer(addr)
+		srv := server.NewServer(addr, logger)
 
 		go func() {
 			sig := make(chan os.Signal, 1)
