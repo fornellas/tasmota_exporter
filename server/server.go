@@ -26,20 +26,20 @@ func getProbeFn(logger *logrus.Logger) func(w http.ResponseWriter, req *http.Req
 		}
 
 		// Target
-		if !req.URL.Query().Has("target") {
+		if !req.URL.Query().Has("address") {
 			w.WriteHeader(http.StatusBadRequest)
-			io.WriteString(w, "missing 'target' parameter")
+			io.WriteString(w, "missing 'address' parameter")
 			return
 		}
-		tasmotaUrl, err := url.Parse(req.URL.Query().Get("target"))
+		tasmotaUrl, err := url.Parse(req.URL.Query().Get("address"))
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			fmt.Fprintf(w, "invalid 'target' parameter: %v", err)
+			fmt.Fprintf(w, "invalid 'address' parameter: %v", err)
 			return
 		}
 		if tasmotaUrl.RequestURI() != "/" {
 			w.WriteHeader(http.StatusBadRequest)
-			fmt.Fprintf(w, "invalid 'target' parameter, path must be '/' without query parameters: %v", tasmotaUrl.RequestURI())
+			fmt.Fprintf(w, "invalid 'address' parameter, path must be '/' without query parameters: %v", tasmotaUrl.RequestURI())
 			return
 		}
 		tasmotaUrl.Path = "/cm"
