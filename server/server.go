@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -8,6 +9,8 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+
+	"github.com/fornellas/tasmota_exporter/tasmota"
 )
 
 var defaultTimeout = time.Second * 10
@@ -58,7 +61,7 @@ func getProbeFn(logger *logrus.Logger) func(w http.ResponseWriter, req *http.Req
 			}
 		}
 
-		// Client
+		// GET
 		client := http.Client{
 			Timeout: timeout,
 		}
@@ -79,8 +82,21 @@ func getProbeFn(logger *logrus.Logger) func(w http.ResponseWriter, req *http.Req
 			fmt.Fprintf(w, `GET %s returned Content-Type != application/json: %v`, tasmotaUrl.String(), resp.Header.Get("Content-Type"))
 			return
 		}
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprintf(w, `GET %s: failed to read body: %v`, tasmotaUrl.String(), err)
+			return
+		}
 
 		// Parse
+		var status tasmota.Status
+		if err := json.Unmarshal(body, &status); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprintf(w, `GET %s: failed to parse body: %v`, tasmotaUrl.String(), err)
+			return
+		}
+		logger.Infof("%#v\n", status)
 	}
 }
 
