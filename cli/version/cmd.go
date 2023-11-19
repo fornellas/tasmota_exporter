@@ -16,11 +16,3 @@ var Cmd = &cobra.Command{
 		fmt.Printf("%s\n", version.GetVersion())
 	},
 }
-
-func Reset() {
-
-}
-
-func init() {
-
-}

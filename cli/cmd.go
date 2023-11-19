@@ -6,7 +6,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 
-	"github.com/fornellas/tasmota_exporter/cli/lib"
+	"github.com/fornellas/tasmota_exporter/cli/server"
 	"github.com/fornellas/tasmota_exporter/cli/version"
 	"github.com/fornellas/tasmota_exporter/log"
 )
@@ -38,17 +38,6 @@ var Cmd = &cobra.Command{
 	},
 }
 
-var resetFuncs []func()
-
-func Reset() {
-	logLevelStr = defaultLogLevelStr
-	forceColor = defaultForceColor
-	for _, resetFunc := range resetFuncs {
-		resetFunc()
-	}
-	lib.Reset()
-}
-
 func init() {
 	Cmd.PersistentFlags().StringVarP(
 		&logLevelStr, "log-level", "l", defaultLogLevelStr,
@@ -59,6 +48,6 @@ func init() {
 		"Force colored output",
 	)
 
+	Cmd.AddCommand(server.Cmd)
 	Cmd.AddCommand(version.Cmd)
-	resetFuncs = append(resetFuncs, version.Reset)
 }
