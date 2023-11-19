@@ -7,7 +7,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/fornellas/tasmota_exporter/cli/server"
-	"github.com/fornellas/tasmota_exporter/cli/version"
 	"github.com/fornellas/tasmota_exporter/log"
 )
 
@@ -49,5 +48,4 @@ func init() {
 	)
 
 	Cmd.AddCommand(server.Cmd)
-	Cmd.AddCommand(version.Cmd)
 }

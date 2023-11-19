@@ -315,7 +315,6 @@ build: go go-generate
 .PHONY: clean-build
 clean-build:
 	$(GO) env &>/dev/null && $(GO) clean -r -cache -modcache
-	rm -f version/.version
 	rm -f tasmota_exporter.*.*
 clean: clean-build
 
